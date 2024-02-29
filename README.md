@@ -1,2 +1,5 @@
-# bash-scripts
-Useful bash scripts
+# Bash Scripts
+Useful bash scripts.
+
+See relevant directories.
+
