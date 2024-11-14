@@ -1,7 +1,7 @@
 #!/bin/bash
 # load ssh keys
 
-echo "\nGet your password manager ready..."
+echo -e "\nGet your password manager ready..."
 read -r -n1 key 
 
 echo -e "\nload senary key"
