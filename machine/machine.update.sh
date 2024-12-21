@@ -6,7 +6,7 @@ echo -e "\nUpgrading machine..."
 echo -e "\nUsing APT to update packages..."
 
 sudo apt update
-sudp apt upgrade
+sudo apt upgrade
 sudo apt autoclean
 sudo apt autoremove
 
