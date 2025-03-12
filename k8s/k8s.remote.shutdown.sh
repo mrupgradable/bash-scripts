@@ -61,40 +61,39 @@ if [ -z "$NODES" ]; then
 fi
 
 # Read & reverse all nodes
-read -r -a NODES_ARR <<< "$NODES"
-REMOTE_NODES=$(printf "%s " "${NODES_ARR[@]}" | tac)
+REMOTE_NODES=$(echo "$NODES" | tr ' ' '\n' | tac | tr '\n' ' ')
 
 echo "Will shutdown in this order ⇒ $REMOTE_NODES"
 
-## Counter for processed nodes
-#count=0
-#total=$(echo "$NODES" | wc -w)
-#
-#echo "Starting shutdown process for $total nodes with user $REMOTE_USER..."
-#
-## Loop through each node
-#for node in $REMOTE_NODES; do
-#    ((count++))
-#    echo "Processing node $count of $total"
-#
-#    # Parse node string (format: host:port or host, or user@host:port)
-#    if [[ "$node" =~ @ ]]; then
-#        # If node contains username, use it instead of REMOTE_USER
-#        IFS='@' read -r username hostname_port <<< "$node"
-#    else
-#        username="$REMOTE_USER"
-#        hostname_port="$node"
-#    fi
-#
-#    IFS=':' read -r hostname port <<< "$hostname_port"
-#
-#    # If no port specified, shutdown_node function will use default (22)
-#    shutdown_node "$username" "$hostname" "$port"
-#
-#    # Optional: Add delay between shutdowns
-#    sleep 2
-#done
-#
-#echo "------------------------------------------------"
-#echo "Completed shutdown process for $count nodes"
-#echo "------------------------------------------------"
+# Counter for processed nodes
+count=0
+total=$(echo "$NODES" | wc -w)
+
+echo "Starting shutdown process for $total nodes with user $REMOTE_USER..."
+
+# Loop through each node
+for node in $REMOTE_NODES; do
+    ((count++))
+    echo "Processing node $count of $total"
+
+    # Parse node string (format: host:port or host, or user@host:port)
+    if [[ "$node" =~ @ ]]; then
+        # If node contains username, use it instead of REMOTE_USER
+        IFS='@' read -r username hostname_port <<< "$node"
+    else
+        username="$REMOTE_USER"
+        hostname_port="$node"
+    fi
+
+    IFS=':' read -r hostname port <<< "$hostname_port"
+
+    # If no port specified, shutdown_node function will use default (22)
+    shutdown_node "$username" "$hostname" "$port"
+
+    # Optional: Add delay between shutdowns
+    sleep 2
+done
+
+echo "------------------------------------------------"
+echo "Completed shutdown process for $count nodes"
+echo "------------------------------------------------"
