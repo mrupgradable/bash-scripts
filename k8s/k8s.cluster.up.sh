@@ -1,6 +1,8 @@
 #!/bin/bash
 # nodes should be up, ensure are completely ready
 
+cd ~/bash-scripts/k8s
+
 WORKER_NODES=$(./k8s.worker.nodes.sh)
 
 count=0

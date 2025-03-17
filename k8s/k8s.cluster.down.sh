@@ -1,6 +1,8 @@
 #!/bin/bash
 # take down k8s nodes (starting with workers, then master)
 
+cd ~/bash-scripts/k8s
+
 echo "Draining WORKER nodes.."
 ./k8s.drain.worker.nodes.sh
 
