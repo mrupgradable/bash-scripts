@@ -13,4 +13,6 @@
 
 echo "starting k9s"
 
-docker run --rm -it -v $HOME/.kube/config:/root/.kube/config derailed/k9s
+NAMESPACE=${1:-all}
+
+docker run --rm -it -v $HOME/.kube/config:/root/.kube/config derailed/k9s -n $NAMESPACE
