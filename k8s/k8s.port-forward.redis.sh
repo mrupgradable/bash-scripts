@@ -1,4 +1,9 @@
 #!/bin/bash
-# port forwarding to k8s cluster service + namespace
+# port forwarding to k8s redis (via service)
 
-echo "k port-forward svc/redis-db-service 7379:6379 -n $1" | xclip -selection clipboard
+if [ -z "$1" ]; then
+  echo "Error: 'namespace' value missing → provide it to port forward to this namespace"
+  exit 1
+fi
+
+kubectl -n $1 port-forward svc/redis-db-service 7379:6379
