@@ -1,6 +1,28 @@
 #!/bin/bash
 # Script to SSH into machine and shut it down
 
+# stop docker processes
+stop_docker_processes() {
+    local USERNAME=$1
+    local HOSTNAME=$2
+    local PORT=${3:-22}
+
+    echo "------------------------------------------------"
+    echo "Attempting to stop docker processed on $HOSTNAME ..."
+
+    ssh -p "$PORT" "$USERNAME@$HOSTNAME" "docker stop $(docker ps -q)"
+    
+    # Check SSH exit status
+    if [ $? -eq 0 ]; then
+        echo "Successfully stopped docker processes on $HOSTNAME"
+    else
+        echo "Failed to connect or execute command on $HOSTNAME"
+        echo "Possible issues: authentication failure, network error, or insufficient permissions"
+        return 1
+    fi
+    echo "------------------------------------------------"
+}
+
 # Function to shutdown a single node
 shutdown_node() {
     local USERNAME=$1
